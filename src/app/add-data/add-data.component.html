@@ -1,0 +1,72 @@
+<form #employeeForm="ngForm" (ngSubmit)="saveEmployee(employeeForm)">
+  <div class="panel panel-primary container">
+    <div class="panel-heading">
+      <h3 class="pannel-title">Create Employee</h3>
+    </div>
+
+    <div class="panel-body">
+      <div class="form-group ">
+        <label>Id</label>
+        <input id="id" type="number" class="form-control" name="id" [(ngModel)]="employeeModel.id" maxlength="4"
+          [class.is-invalid]="id.invalid && id.touched " ng-pattern="^[0-9]+$" #id="ngModel" required placeholder="Enter id">
+        <small class="text-danger" [class.d-none]="id.valid || id.untouched">**please enter valid Id</small>
+      </div>
+
+      <div class="form-group">
+        <label for="fullName">FullName</label>
+        <input id="fullName" type="text" class="form-control" name="fn" [(ngModel)]="employeeModel.name"
+          [class.is-invalid]="Name.invalid && Name.touched" #Name="ngModel" required placeholder="Enter Name">
+        <small class="text-danger" [class.d-none]="Name.valid || Name.untouched">**please enter valid Name</small>
+      </div>
+
+      <div class="form-group ">
+        <label for="email">Email</label>
+        <input id="email" type="email" class="form-control" name="em" [(ngModel)]="employeeModel.email"
+          [class.is-invalid]="email.invalid && email.touched" #email="ngModel" required placeholder="Enter Email"
+          pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
+        <small class="text-danger" [class.d-none]="email.valid || email.untouched">**please enter valid Email</small>
+      </div>
+
+      <div class="form-group">
+        <label for="phoneNumber">PhoneNumber</label>
+        <input id="phoneNumber" type="text" class="form-control" name="pH" [(ngModel)]="employeeModel.phoneNumber"
+          [class.is-invalid]="pH.invalid && pH.touched" #pH="ngModel" required placeholder="Enter phonenumber" pattern="[0-9]{10}">
+        <small class="text-danger" [class.d-none]="pH.valid || pH.untouched">**please enter valid phonenumber</small>
+      </div>
+
+      <div class="form-group">
+        <label>Gender</label>
+        <div class="form-control">
+          <label class="radio-inline">
+            <input type="radio" value="male" name="gender" [(ngModel)]="employeeModel.gender">Male
+          </label> &nbsp;&nbsp;
+          <label class="radio-inline">
+            <input type="radio" value="female" name="gender" [(ngModel)]="employeeModel.gender">Female
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="department">
+          Department
+        </label>
+        <select id="department" name="department" [(ngModel)]="employeeModel.department" class="custom-select"
+          placeholder="select department" required #department="ngModel" [class.is-invalid]="department.invalid && department.touched">
+          <option *ngFor="let dept of departments" [value]="dept.id">
+            {{dept.name}}
+          </option>
+        </select>
+        <small class="text-danger" [class.d-none]="department.valid || department.untouched">**please enter valid
+          department</small>
+      </div>
+    </div>
+
+
+
+    <div class="panel-footer">
+      <input [disabled]="employeeForm.form.invalid" type="image" (click)="showToaster()" src="assets/save.png" alt="Submit"
+        width="48" height="48">
+    </div>
+  </div>
+</form>
+{{employeeForm.value |json}}

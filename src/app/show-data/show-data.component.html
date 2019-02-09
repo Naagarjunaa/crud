@@ -1,0 +1,170 @@
+<h2>Employee Details</h2>
+<div class="main">
+  <div class="form-group has-search">
+    <span class="fa fa-search form-control-feedback"></span>
+    <input class="form-control" type="text" name="search" [(ngModel)]="filter" placeholder="Search">
+  </div>
+</div>
+<div>
+  <thead>
+    <tr>
+      <th class="style" (click)="sort('fn')">fullName &nbsp;&nbsp;&nbsp;
+        <span class="glyphicon sort-icon" *ngIf="key =='fn'" [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th class="style" (click)="sort('department')">Department
+        <span class="glyphicon sort-icon" *ngIf="key =='department'" [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+    </tr>
+  </thead>
+  <button (click)="toggleTitle()" style="float:right" id="flip"> Show FullDetails</button>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+</div>
+
+<div *ngFor="let data of parentData | filter:filter | paginate: { itemsPerPage: 1, currentPage: p }; index as i">
+
+  <div class="panel panel-primary container">
+
+    <div class="panel-heading">
+      <h3 class="pannel-title">{{data.fn}}</h3>
+    </div>
+
+    <div class="title" id="panel">
+      <div class="panel-body">
+        <div class="col-xs-12">
+          <div class="row">
+            <div class="col-xs-8">
+
+              <div class="row">
+                <div class="col-xs-12">id</div>
+                <div class="col-xs-12">: {{data.id}}</div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">department</div>
+                <div class="col-xs-12">: {{data.department}}</div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">email</div>
+                <div class="col-xs-12">: {{data.em}}</div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-xs-12">Gender</div>
+                <div class="col-xs-12">: {{data.gender}}</div>
+              </div>
+
+
+
+              <div class="row">
+                <div class="col-xs-12">phoneNumber</div>
+                <div class="col-xs-12">: {{data.pH}}</div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-footer ">
+
+      <input type="image" src="assets/delete.jpeg" alt="Submit" width="48" height="48" data-toggle="modal" data-target="#myModal">
+
+      &nbsp;&nbsp;&nbsp;
+      <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Delete Details</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              Are you sure to delete Employee Detail...
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" (click)=onDelete(i) data-dismiss="modal">Okay</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <input type="image" src="assets/update.jpeg" alt="Submit" width="48" height="48" (click)=onUpdate(data)>
+
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf=isActivate>
+  <div class="panel-body">
+    <div class="form-group ">
+      <label>Id</label>
+      <input id="id" type="text" class="form-control" name="id" [(ngModel)]="newdata.id" maxlength="4"
+        [class.is-invalid]="id.invalid && id.touched " ng-pattern="^[0-9]+$" #id="ngModel" required>
+      <small class="text-danger" [class.d-none]="id.valid || id.untouched">**please enter valid Id</small>
+    </div>
+
+    <div class="form-group">
+      <label for="fullName">FullName</label>
+      <input id="fullName" type="text" class="form-control" name="fullName" [(ngModel)]="newdata.fn" [class.is-invalid]="Name.invalid && Name.touched"
+        #Name="ngModel" required>
+      <small class="text-danger" [class.d-none]="id.valid || id.untouched">**please enter valid Id</small>
+    </div>
+
+
+    <div class="form-group ">
+      <label for="email">Email</label>
+      <input id="email" type="text" class="form-control" name="email" [(ngModel)]="newdata.em" [class.is-invalid]="email.invalid && email.touched"
+        #email="ngModel" required pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?">
+      <small class="text-danger" [class.d-none]="email.valid || email.untouched">**please enter valid Email</small>
+    </div>
+
+    <div class="form-group">
+      <label for="phoneNumber">PhoneNumber</label>
+      <input id="phoneNumber" type="text" class="form-control" name="phoneNumber" [(ngModel)]="newdata.pH"
+        [class.is-invalid]="pH.invalid && pH.touched" #pH="ngModel" required pattern="[0-9]{10}">
+      <small class="text-danger" [class.d-none]="pH.valid || pH.untouched">**please enter valid phonenumber</small>
+    </div>
+
+    <div class="form-group">
+      <label>Gender</label>
+      <div class="form-control">
+        <label class="radio-inline">
+          <input type="radio" value="male" name="gender" [(ngModel)]="newdata.gender">Male
+        </label> &nbsp;&nbsp;
+        <label class="radio-inline">
+          <input type="radio" value="female" name="gender" [(ngModel)]="newdata.gender">Female
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="department">
+        Department
+      </label>
+      <select id="department" name="department" [(ngModel)]="newdata.department" class="custom-select" required
+        #department="ngModel" [class.is-invalid]="department.invalid && department.touched">>
+        <option *ngFor="let dept of departments" [value]="dept.id">
+          {{dept.name}}
+        </option>
+      </select>
+      <small class="text-danger" [class.d-none]="department.valid || department.untouched">**please enter valid
+        department</small>
+    </div>
+
+    <div>
+      <input type="image" src="assets/updated.png" alt="Submit" width="48" height="48" (click)=updated(i)>
+
+    </div>
+  </div>
+</div>
